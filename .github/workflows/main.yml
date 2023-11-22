@@ -1,7 +1,13 @@
+name: 'Find Conflict Markers'
+
 on:
   push:
   workflow_dispatch:
     inputs:
+      tests_only:
+        default: true
+        description: Only run testing jobs
+        type: boolean
       include_dir:
         default: ''
         description: Comma-separated list of directories to search
@@ -14,21 +20,22 @@ on:
 jobs:
   find_conflict_markers:
     runs-on: ubuntu-latest
+    if: ${{ inputs.tests_only != 'true' }}
     name: Find merge conflicts
     steps:
       - uses: actions/checkout@v1
       - name: Merge Conflict finder
         uses: ./.github/..
 
-  test_markers_not_found:
+  markers_not_found_test:
     runs-on: ubuntu-latest
     name: Conflict marker test (no markers found)
     steps:
       - uses: actions/checkout@v1
       - name: Merge Conflict finder
         with:
-          include_dir: '__test__'
-          includes: 'pass.md'
+          include_dir: ${{ inputs.include_dir || '__test__' }}
+          includes: ${{ inputs.includes || 'pass.md' }}
         uses: ./.github/..
 
   test_markers_found:
@@ -38,6 +45,6 @@ jobs:
       - uses: actions/checkout@v1
       - name: Merge Conflict finder
         with:
-          include_dir: '__test__'
-          includes: 'fail.ts'
+          include_dir: ${{ inputs.include_dir || '__test__' }}
+          includes: ${{ inputs.includes || 'fail.ts' }}
         uses: ./.github/..
