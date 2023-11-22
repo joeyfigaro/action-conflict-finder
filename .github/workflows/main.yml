@@ -1,10 +1,43 @@
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      include_dir:
+        default: ''
+        description: Comma-separated list of directories to search
+        type: string
+      includes:
+        default: '*.*'
+        description: Comma-separated list of directories to search
+        type: string
 
 jobs:
-  merge_conflict_job:
+  find_conflict_markers:
     runs-on: ubuntu-latest
     name: Find merge conflicts
     steps:
       - uses: actions/checkout@v1
       - name: Merge Conflict finder
+        uses: ./.github/..
+
+  test_markers_not_found:
+    runs-on: ubuntu-latest
+    name: Conflict marker test (no markers found)
+    steps:
+      - uses: actions/checkout@v1
+      - name: Merge Conflict finder
+        with:
+          include_dir: '__test__'
+          includes: 'pass.md'
+        uses: ./.github/..
+
+  test_markers_found:
+    runs-on: ubuntu-latest
+    name: Conflict marker test (markers found)
+    steps:
+      - uses: actions/checkout@v1
+      - name: Merge Conflict finder
+        with:
+          include_dir: '__test__'
+          includes: 'fail.ts'
         uses: ./.github/..

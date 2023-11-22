@@ -1,11 +1,7 @@
-# Merge Conflict Finder
-
-This action finds any merge conflicts in your repository.
+# Conflict Marker Search
 
 Sometimes we accidentally resolve merge conflicts without actually resolving it,
-this action simply finds if we have any instances of files with merge conflicts we
-didn't resolve and reports them.
-
+this action uses pattern searching to find files with merge conflict markers and reports them.
 
 ## How to use it?
 This is a GitHub action, so it has to be added to a GitHub workflow.  
@@ -19,25 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Find merge conflicts
     steps:
-      # Checkout the source code so there are some files to look at.
       - uses: actions/checkout@v2
-      # Run the actual merge conflict finder
-      - name: Merge Conflict finder
-        uses: olivernybroe/action-conflict-finder@v4.0
+      - name: Merge conflict finder
+        uses: joeyfigaro/action-conflict-finder@v4.0
 ```
 
-On each push, it will now run the merge conflict finder
+### Includes
+You can provide include patterns to the search through the following inputs:
 
-### Excludes
-You can add custom excludes to the search through the following inputs:
+#### `include_dir`
+A comma-separated list of directories to use for searching. The .git folder is always ignored.
 
-#### `exclude_dir`
-A comma separate list of directories to ignore. The .git folder is always ignored
-
-#### `excludes`
-A comma separated list of files to ignore. Supports wildcard matching. 
-
-A workflow with the inputs could look like:
+#### `includes`
+A comma-separated list of files to search. Supports wildcard matching. 
 
 ```yaml
 on: [push]
@@ -47,12 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Find merge conflicts
     steps:
-      # Checkout the source code so we have some files to look at.
       - uses: actions/checkout@v2
-      # Run the actual merge conflict finder
-      - name: Merge Conflict finder
-        uses: olivernybroe/action-conflict-finder@v4.0
+      - name: Merge conflict finder
+        uses: joeyfigaro/action-conflict-finder@v4.0
         with:
-          exclude_dir: "path/to/ignore,path/to/ignore2"
-          excludes: "ignore.me,*.zip"
+          include_dir: "path/to/directory/to/search,path/to/another/directory"
+          includes: "Cargo.toml,main.rs"
 ```

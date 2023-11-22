@@ -1,22 +1,22 @@
 name: 'Merge Conflict Finder'
-description: 'Check if there are any unresolved merge conflicts'
+description: 'Check provided files and/or directories for the presence of conflict markers.'
 branding:
   icon: 'git-merge'
   color: 'gray-dark'
 inputs:
-  exclude_dir:
-    description: "Glob of directories to exclude from check"
+  include_dir:
+    description: "Glob of directories to search."
     required: false
     default: 'node_modules,vendor'
-  excludes:
-    description: "Glob of files to exclude from check, supports wildcards"
+  includes:
+    description: "Glob of files to search. Supports wildcards."
     required: false
-    default: ''
+    default: '**/*'
 runs:
   using: 'composite'
   steps:
-    - run: $GITHUB_ACTION_PATH/conflictFinder
+    - run: $GITHUB_ACTION_PATH/action.sh
       shell: bash
       env:
-        INPUT_EXCLUDE_DIR: ${{ inputs.exclude_dir }}
-        INPUT_EXCLUDES: ${{ inputs.excludes }}
+        INPUT_INCLUDE_DIR: ${{ inputs.include_dir }}
+        INPUT_INCLUDES: ${{ inputs.includes }}
