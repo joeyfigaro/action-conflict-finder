@@ -16,7 +16,7 @@ grepExit () {
 INCLUDE=(${INPUT_INCLUDES/,/ })
 INCLUDE_DIR=(${INPUT_INCLUDE_DIR/,/ })
 
-CONFLICTS="$(grep -lr -r --exclude-dir=.git "${INCLUDE_DIR[@]/#/--include-dir=}" "${INCLUDE[@]/#/--include=}" -E -- '^<<<<<<<|^>>>>>>>' .)" || grepExit $?
+CONFLICTS="$(grep -lr -r --exclude-dir=.git "${INCLUDE[@]/#/--include=}" -E -- '^<<<<<<<|^>>>>>>>' .)" || grepExit $?
 
 printf "\033[1;31mFound conflict markers.\033[0m\n"
 
