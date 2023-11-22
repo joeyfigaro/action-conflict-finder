@@ -7,11 +7,11 @@ inputs:
   include_dir:
     description: "Glob of directories to search."
     required: false
-    default: 'node_modules,vendor'
+    default: '**'
   includes:
     description: "Glob of files to search. Supports wildcards."
     required: false
-    default: '**/*'
+    default: '*'
 runs:
   using: 'composite'
   steps:
