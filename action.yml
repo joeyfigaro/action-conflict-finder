@@ -4,10 +4,6 @@ branding:
   icon: 'git-merge'
   color: 'gray-dark'
 inputs:
-  include_dir:
-    description: "Glob of directories to search."
-    required: false
-    default: '**'
   includes:
     description: "Glob of files to search. Supports wildcards."
     required: false
@@ -18,5 +14,4 @@ runs:
     - run: $GITHUB_ACTION_PATH/action.sh
       shell: bash
       env:
-        INPUT_INCLUDE_DIR: ${{ inputs.include_dir }}
         INPUT_INCLUDES: ${{ inputs.includes }}
